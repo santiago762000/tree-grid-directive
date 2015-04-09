@@ -9,8 +9,14 @@
           " <table class=\"table tree-grid\">\n" +
           "   <thead>\n" +
           "     <tr>\n" +
-          "       <th>{{expandingProperty.displayName || expandingProperty.field || expandingProperty}}</th>\n" +
-          "       <th ng-repeat=\"col in colDefinitions\">{{col.displayName || col.field}}</th>\n" +
+          "       <th>{{expandingProperty.displayName || expandingProperty.field || expandingProperty}}\n"+
+                       "<i class='fa fa-angle-up ' ng-if='status[expandingProperty.displayName || expandingProperty.field || expandingProperty]' ng-click='changeStatus(expandingProperty.displayName || expandingProperty.field || expandingProperty);'></i>\n"+
+                       "<i class='fa fa-angle-down' ng-if='!status[expandingProperty.displayName || expandingProperty.field || expandingProperty]' ng-click='changeStatus(expandingProperty.displayName || expandingProperty.field || expandingProperty);'></i>\n"+
+"                 </th>\n" +
+          "       <th ng-repeat=\"col in colDefinitions\">{{col.displayName || col.field}}\n"+
+                       "<i class='fa fa-angle-up ' ng-if='status[col.displayName || col.field]' ng-click='changeStatus(col.displayName || col.field);'></i>\n"+
+                       "<i class='fa fa-angle-down' ng-if='!status[col.displayName || col.field]' ng-click='changeStatus(col.displayName || col.field);'></i>\n"+
+"                 </th>\n" +
           "     </tr>\n" +
           "   </thead>\n" +
           "   <tbody>\n" +
@@ -88,6 +94,19 @@
           },
           link       : function (scope, element, attrs) {
             var error, expandingProperty, expand_all_parents, expand_level, for_all_ancestors, for_each_branch, get_parent, n, on_treeData_change, select_branch, selected_branch, tree;
+ scope.status={}
+ 
+ //scope.status['Type'] = true;
+  
+  
+  scope.changeStatus = function(header){
+    scope.status[header] = !scope.status[header];
+	scope.$parent.restore(header,scope.status[header]);
+	$timeout(function() {
+		var el = document.getElementById('expandAll');
+		angular.element(el).triggerHandler('click');
+		}, 0);
+  };
 
             error = function (s) {
               console.log('ERROR:' + s);
@@ -207,6 +226,7 @@
                 });
               }
             };
+
             scope.user_clicks_branch = function (branch) {
               if (branch !== selected_branch) {
                 return select_branch(branch);
@@ -353,7 +373,7 @@
               if (angular.isObject(scope.treeControl)) {
                 tree = scope.treeControl;
                 tree.expand_all = function () {
-                  return for_each_branch(function (b, level) {
+					return for_each_branch(function (b, level) {
                     return b.expanded = true;
                   });
                 };
