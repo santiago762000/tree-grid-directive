@@ -9,7 +9,7 @@
           " <table class=\"table tree-grid\">\n" +
           "   <thead>\n" +
           "     <tr>\n" +
-          "       <th><a id='expandAll' ng-click='treeControl.expand_all()' class='fa fa-expand'></a><a ng-click='treeControl.collapse_all()' class='fa fa-compress'></a>\n"+
+          "       <th><checkbox ng-model=\"checkboxModel\"></checkbox>&nbsp;<a id='expandAll' ng-click='treeControl.expand_all()' class='fa fa-expand'></a><a ng-click='treeControl.collapse_all()' class='fa fa-compress'></a>\n"+
                        "{{expandingProperty.displayName || expandingProperty.field || expandingProperty}}\n"+
                        "<i class='fa fa-angle-up ' ng-if='status[expandingProperty.displayName || expandingProperty.field || expandingProperty]' ng-click='changeStatus(expandingProperty.displayName || expandingProperty.field || expandingProperty);'></i>\n"+
                        "<i class='fa fa-angle-down' ng-if='!status[expandingProperty.displayName || expandingProperty.field || expandingProperty]' ng-click='changeStatus(expandingProperty.displayName || expandingProperty.field || expandingProperty);'></i>\n"+
@@ -23,7 +23,7 @@
           "   <tbody>\n" +
           "     <tr ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\"\n" +
           "       ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\">\n" +
-          "       <td><a ng-click=\"user_clicks_branch(row.branch)\"><i ng-class=\"row.tree_icon\"\n" +
+          "       <td><checkbox ng-model=\"checkboxModel\"></checkbox><a ng-click=\"user_clicks_branch(row.branch)\"><i ng-class=\"row.tree_icon\"\n" +
           "              ng-click=\"row.branch.expanded = !row.branch.expanded\"\n" +
           "              class=\"indented tree-icon\"></i>\n" +
           "           </a><span class=\"indented tree-label\" ng-click=\"on_user_click(row.branch)\">\n" +
