@@ -9,7 +9,8 @@
           " <table class=\"table tree-grid\">\n" +
           "   <thead>\n" +
           "     <tr>\n" +
-          "       <th>{{expandingProperty.displayName || expandingProperty.field || expandingProperty}}\n"+
+          "       <th><a id='expandAll' ng-click='treeControl.expand_all()' class='fa fa-expand'></a><a ng-click='treeControl.collapse_all()' class='fa fa-compress'></a>\n"+
+                       "{{expandingProperty.displayName || expandingProperty.field || expandingProperty}}\n"+
                        "<i class='fa fa-angle-up ' ng-if='status[expandingProperty.displayName || expandingProperty.field || expandingProperty]' ng-click='changeStatus(expandingProperty.displayName || expandingProperty.field || expandingProperty);'></i>\n"+
                        "<i class='fa fa-angle-down' ng-if='!status[expandingProperty.displayName || expandingProperty.field || expandingProperty]' ng-click='changeStatus(expandingProperty.displayName || expandingProperty.field || expandingProperty);'></i>\n"+
 "                 </th>\n" +
