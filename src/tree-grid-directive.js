@@ -23,7 +23,7 @@
           "   <tbody>\n" +
           "     <tr ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\"\n" +
           "       ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\">\n" +
-          "       <td><checkbox ng-model=\"checkboxModel\"></checkbox><a ng-click=\"user_clicks_branch(row.branch)\"><i ng-class=\"row.tree_icon\"\n" +
+          "       <td><checkbox ng-model='checkboxModel' ng-name='row.branch.FileId' ng-change='onSelectItems(row.branch)' ng-true-value='add:{{row.branch.FileId}}' ng-false-value='delete:{{row.branch.FileId}}'></checkbox><a ng-click=\"user_clicks_branch(row.branch)\"><i ng-class=\"row.tree_icon\"\n" +
           "              ng-click=\"row.branch.expanded = !row.branch.expanded\"\n" +
           "              class=\"indented tree-icon\"></i>\n" +
           "           </a><span class=\"indented tree-label\" ng-click=\"on_user_click(row.branch)\">\n" +
@@ -95,9 +95,20 @@
           },
           link       : function (scope, element, attrs) {
             var error, expandingProperty, expand_all_parents, expand_level, for_all_ancestors, for_each_branch, get_parent, n, on_treeData_change, select_branch, selected_branch, tree;
- scope.status={}
- 
- //scope.status['Type'] = true;
+ scope.status={};
+ scope.selectedItems={};
+  
+ scope.onSelectItems=function(branch){
+	 var prefix=this.checkboxModel.substring(0,this.checkboxModel.indexOf(":"));
+	 var value=this.checkboxModel.substring(this.checkboxModel.indexOf(":")+1);;
+	 if(prefix==="add"){
+		 scope.selectedItems[value]=branch.Name;
+	 }else{
+		 delete scope.selectedItems[value];
+	 }
+	 scope.$parent.selectedItems=scope.selectedItems;
+	 console.log(scope.selectedItems);
+ };
   
   
   scope.changeStatus = function(header){
