@@ -23,7 +23,9 @@
           "   <tbody>\n" +
           "     <tr ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\"\n" +
           "       ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\">\n" +
-          "       <td><checkbox ng-model='checkboxModel' ng-name='row.branch.FileId' ng-change='onSelectItems(row.branch)' ng-true-value='add:{{row.branch.FileId}}' ng-false-value='delete:{{row.branch.FileId}}'></checkbox><a ng-click=\"user_clicks_branch(row.branch)\"><i ng-class=\"row.tree_icon\"\n" +
+          "       <td><checkbox ng-model='checkboxModel' ng-name='row.branch.FileId' ng-change='onSelectItems(row.branch)' ng-true-value='add:{{row.branch.FileId}}' ng-false-value='delete:{{row.branch.FileId}}'></checkbox>\n"+
+          "            <span class='text-primary fa fa-lock' ng-click='showPermissions()'></span>\n"+
+          "            <a ng-click=\"user_clicks_branch(row.branch)\"><i ng-class=\"row.tree_icon\"\n" +
           "              ng-click=\"row.branch.expanded = !row.branch.expanded\"\n" +
           "              class=\"indented tree-icon\"></i>\n" +
           "           </a><span class=\"indented tree-label\" ng-click=\"on_user_click(row.branch)\">\n" +
@@ -109,7 +111,10 @@
 	 scope.$parent.selectedItems=scope.selectedItems;
 	 console.log(scope.selectedItems);
  };
-  
+ 
+ scope.showPermissions=function(){
+	 scope.$parent.doPermissions();
+ };
   
   scope.changeStatus = function(header){
     scope.status[header] = !scope.status[header];
