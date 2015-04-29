@@ -23,13 +23,14 @@
           "   <tbody>\n" +
           "     <tr ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\"\n" +
           "       ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"tree-grid-row\">\n" +
-          "       <td><checkbox ng-model='checkboxModel' ng-name='row.branch.FileId' ng-change='onSelectItems(row.branch)' ng-true-value='add:{{row.branch.FileId}}' ng-false-value='delete:{{row.branch.FileId}}'></checkbox>\n"+
-          "            <span class='text-primary fa fa-lock' ng-click='showPermissions()'></span>\n"+
-		  "            <span class='text-primary fa fa-gear' ng-click='showProperties()'></span>\n"+
+          "       <td><checkbox ng-model='checkboxModel' ng-show='showIcon(row.branch[expandingProperty.field] || row.branch[expandingProperty])' ng-name='row.branch.FileId' ng-change='onSelectItems(row.branch)' ng-true-value='add:{{row.branch.FileId}}' ng-false-value='delete:{{row.branch.FileId}}'></checkbox>\n"+
           "            <a ng-click=\"user_clicks_branch(row.branch)\"><i ng-class=\"row.tree_icon\"\n" +
           "              ng-click=\"row.branch.expanded = !row.branch.expanded\"\n" +
           "              class=\"indented tree-icon\"></i>\n" +
-          "           </a><span class=\"indented tree-label\" ng-click=\"on_user_click(row.branch)\">\n" +
+          "           </a>\n"+
+          "            <span class='text-primary fa fa-lock' ng-show='showIcon(row.branch[expandingProperty.field] || row.branch[expandingProperty])' ng-click='showPermissions()'></span>\n"+
+		  "            <span class='text-primary fa fa-gear' ng-show='showIcon(row.branch[expandingProperty.field] || row.branch[expandingProperty])' ng-click='showProperties()'></span>\n"+
+		  "			   <span class=\"indented tree-label\" ng-click=\"on_user_click(row.branch)\">\n" +
           "             {{row.branch[expandingProperty.field] || row.branch[expandingProperty]}}</span>\n" +
           "       </td>\n" +
           "       <td ng-repeat=\"col in colDefinitions\">\n" +
@@ -128,6 +129,15 @@
 		var el = document.getElementById('expandAll');
 		angular.element(el).triggerHandler('click');
 		}, 0);
+  };
+  
+  scope.showIcon=function(name){
+	  if(name.substring(name.length - 1, name.length) !== '/'){
+		  return true;
+	  }else{
+		  return false;
+	  }
+	  
   };
 
             error = function (s) {
@@ -339,7 +349,9 @@
                   branch.expanded = false;
                 }
                 if (!branch.children || branch.children.length === 0) {
-                  tree_icon = attrs.iconLeaf;
+					if(branch.Name.substring(branch.Name.length - 1, branch.Name.length) !== '/'){
+						tree_icon = attrs.iconLeaf;
+					}	
                 } else {
                   if (branch.expanded) {
                     tree_icon = attrs.iconCollapse;
